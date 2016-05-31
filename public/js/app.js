@@ -1,4 +1,5 @@
 var questions = [];
+var contexts = null;
 
 var build = function(){
     pageCounter = 0;
@@ -119,8 +120,8 @@ var build = function(){
         var courseSelect = document.getElementById("courseSelect");
         
         var courseOption = document.createElement("option");
-        courseOption.setAttribute("value", course);
-        var courseText = document.createTextNode(course);
+        courseOption.setAttribute("value", course.id);
+        var courseText = document.createTextNode(course.name);
         courseOption.appendChild(courseText);
         
         courseSelect.appendChild(courseOption);
@@ -147,6 +148,10 @@ var build = function(){
     for (var i = 0; i < Math.ceil(qArray.length/questionsPerPage); i++) {
         addPage();
     }
+
+    contexts.forEach(function(context){
+        addCourse(context);
+    });
 }
 
 var api = function(path, method, data, callback){
@@ -177,7 +182,7 @@ var api = function(path, method, data, callback){
 
 var init = function(){
     api('data.php/contexts', 'GET', null, function(data){
-        console.log(data);
+        contexts = JSON.parse(data);
         build();
     });
 }
