@@ -1,0 +1,103 @@
+p,h3 {
+    margin: 0 0 5px 0;
+}
+form  {
+    margin: 0;
+}
+
+th {
+    margin-bottom: 100px;
+}
+
+td{
+    height:30px;
+}
+
+td input{
+    margin-top:5px;
+}
+
+tr:nth-child(even) {background: lightblue}
+tr:nth-child(odd) {background: #FFF}
+
+#rightPanel {
+    min-height: 600px;
+    width: 750px;
+    margin-left: 5%;
+    
+    
+}
+#quizDiv {
+    width: 100%;
+}
+
+#quizName {
+    width: 75%;
+    padding: 5px;
+}
+
+#courseSelect {
+    width: auto;
+    max-width: 25%;
+    padding: 5px;
+    margin: 5px 10px 5px 10px;
+}
+
+#qList {
+    width: 100%;
+    text-align: center;
+}
+
+#questionTable {
+    width: 100%;
+    margin-top: 30px;
+}
+
+#questionPages {
+    width: auto;
+    padding: 0;
+}
+
+.qCheckBox {
+    margin-left: 30%
+}
+
+.qName {
+    text-align: left;
+    width:500px;
+}
+
+.qType {
+    text-align: center;
+}
+
+.qPage {
+    display: inline-block;
+    padding: 10px;
+    width: 20px;
+    border: 1px solid lightgrey;
+}
+
+.qPage:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.qPage:last-child {
+    border-radius: 0 5px 5px 0;
+}
+.qPage:hover {
+    background-color: lightblue;
+}
+
+.qPage.selected {
+    background-color: lightblue;
+}
+
+.submit-button{
+    background:lightblue;
+    color: #000;
+    font-size:14px;
+    font-weight:bold;
+    border: 0;
+    padding: 10px 25px 10px 25px;
+}
