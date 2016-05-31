@@ -178,5 +178,8 @@ var api = function(path, method, data, callback){
 var init = function(){
     api('data.php/contexts', 'GET', null, function(data){
         console.log(data);
+        build();
     });
 }
+
+init();
