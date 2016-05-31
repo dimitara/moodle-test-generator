@@ -63,6 +63,7 @@ echo '<html>
                 <div id="quizDiv">
                     <input id="quizName" type="text" name="quizName">
                     <select id="courseSelect" name="courseSelect">
+                        <option>Изберете курс</option>
                     </select>
                 </div>
                 <div id="qList">
@@ -76,6 +77,9 @@ echo '<html>
                         
                         <ul id="questionPages">
                         </ul>
+                </div>
+                <div>
+                    <span class="warning">Няма избран курс</span>
                 </div>
                 <button id="submit" class="submit-button" onclick="getChecked()">Изтегли тест</button>
         </div>
