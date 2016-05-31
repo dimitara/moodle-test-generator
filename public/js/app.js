@@ -182,7 +182,7 @@ var api = function(path, method, data, callback){
 
 var init = function(){
     api('data.php/contexts', 'GET', null, function(data){
-        contexts = JSON.parse(data);
+        contexts = JSON.parse(data).contexts;
         build();
     });
 }
