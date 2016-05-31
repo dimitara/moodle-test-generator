@@ -56,6 +56,7 @@ tr:nth-child(odd) {background: #FFF}
 #questionPages {
     width: auto;
     padding: 0;
+    margin-top: 50px;
 }
 
 .qCheckBox {
@@ -100,4 +101,6 @@ tr:nth-child(odd) {background: #FFF}
     font-weight:bold;
     border: 0;
     padding: 10px 25px 10px 25px;
+    float: left;
+    margin-top: 20px;
 }
