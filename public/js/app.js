@@ -152,6 +152,15 @@ var build = function(){
     contexts.forEach(function(context){
         addCourse(context);
     });
+
+    if(questions.length){
+        document.getElementById('noQWarning').style.display = 'block';
+        document.getElementById('qList').style.display = 'none';
+    }
+    else{
+        document.getElementById('noQWarning').style.display = 'none';
+        document.getElementById('qList').style.display = 'block';   
+    }
 }
 
 var api = function(path, method, data, callback){

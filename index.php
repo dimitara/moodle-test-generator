@@ -78,7 +78,7 @@ echo '<html>
                         <ul id="questionPages">
                         </ul>
                 </div>
-                <div>
+                <div id="noQWarning">
                     <span class="warning">Няма избран курс</span>
                 </div>
                 <button id="submit" class="submit-button" onclick="getChecked()">Изтегли тест</button>
