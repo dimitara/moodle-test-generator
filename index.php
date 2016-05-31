@@ -46,15 +46,42 @@ foreach ($qtypes as $qtype) {
 
 // Print the settings form.
 echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter centerpara');
-echo '<form method="get" action="." id="settingsform"><div>';
-echo $OUTPUT->heading(get_string('reportsettings', 'report_pdfquizgen'));
-echo '<p id="intro">', get_string('intro', 'report_pdfquizgen') , '</p>';
-echo '<p><label for="menuqtype"> ' . get_string('questiontype', 'admin') . '</label> ';
-echo html_writer::select($qtypechoices, 'qtype', $requestedqtype, array('_all_'=>get_string('all')));
-echo '</p>';
-echo '<p><input type="submit" id="settingssubmit" value="' .
-        get_string('getreport', 'report_pdfquizgen') . '" /></p>';
-echo '</div></form>';
+echo '<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="public/css/quizui.css">
+        
+    </head>
+    <body>
+        <div id="leftPanel" style="float: left">
+        </div>          
+        
+        
+        <div id="rightPanel">
+            <h3>Модул за създаване на тестове</h3>
+            <p>Въведи заглавие на теста</p>
+                <div id="quizDiv">
+                    <input id="quizName" type="text" name="quizName">
+                    <select id="courseSelect" name="courseSelect">
+                    </select>
+                </div>
+                <div id="qList">
+                        <table id="questionTable">
+                            <tr>
+                                <th></th>
+                                <th class="qName">Заглавие</th>
+                                <th class="qType">Тип на въпроса</th>
+                            </tr>
+                        </table>
+                        
+                        <ul id="questionPages">
+                        </ul>
+                </div>
+                <button id="submit" class="submit-button" onclick="getChecked()">Изтегли тест</button>
+        </div>
+        <script src="public/js/quizui.js"></script>
+    </body>
+</html>';
 echo $OUTPUT->box_end();
 
 // If we have a qtype to report on, generate the report.
