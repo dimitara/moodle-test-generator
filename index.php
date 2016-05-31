@@ -49,7 +49,7 @@ echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter centerpara');
 echo '<html>
     <head>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="public/css/quizui.css">
+        <link rel="stylesheet" type="text/css" href="public/css/pdfquiz.css">
         
     </head>
     <body>
@@ -79,7 +79,7 @@ echo '<html>
                 </div>
                 <button id="submit" class="submit-button" onclick="getChecked()">Изтегли тест</button>
         </div>
-        <script src="public/js/quizui.js"></script>
+        <script src="public/js/app.js"></script>
     </body>
 </html>';
 echo $OUTPUT->box_end();
