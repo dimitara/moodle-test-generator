@@ -81,7 +81,7 @@ echo '<html>
                 <div id="noQWarning">
                     <span class="warning">Няма избран курс</span>
                 </div>
-                <button id="submit" class="submit-button" onclick="getChecked()">Изтегли тест</button>
+                <button id="submit" class="submit-button" onclick="sendChecked()">Изтегли тест</button>
         </div>
         <script src="public/js/app.js"></script>
     </body>
