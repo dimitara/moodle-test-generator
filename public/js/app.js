@@ -116,17 +116,6 @@ var build = function(){
         }
     }
 
-    function addCourse (course) {
-        var courseSelect = document.getElementById("courseSelect");
-        
-        var courseOption = document.createElement("option");
-        courseOption.setAttribute("value", course.id);
-        var courseText = document.createTextNode(course.name);
-        courseOption.appendChild(courseText);
-        
-        courseSelect.appendChild(courseOption);
-    }
-
     function getChecked () {
         var wAlert = "Selected Question: "; 
         for (var i = 0; i < qArray.length; i++) {
@@ -138,7 +127,7 @@ var build = function(){
 
     //ADD QUESTIONS TO aArray
     for (var i = 0; i < questions.length; i++) {
-        qArray[i] = new question(questions[i].id, questions[i].title, questions[i].type);
+        qArray[i] = new question(questions[i].id, questions[i].name, questions[i].type);
     }
 
     //DISPLAY INITIAL QUESTION PAGE
@@ -149,10 +138,6 @@ var build = function(){
         addPage();
     }
 
-    contexts.forEach(function(context){
-        addCourse(context);
-    });
-
     if(questions.length){
         document.getElementById('noQWarning').style.display = 'block';
         document.getElementById('qList').style.display = 'none';
@@ -162,6 +147,23 @@ var build = function(){
         document.getElementById('qList').style.display = 'block';   
     }
 }
+
+var bindContexts = function(){
+    contexts.forEach(function(context){
+        addCourse(context);
+    });
+
+    function addCourse (course) {
+        var courseSelect = document.getElementById("courseSelect");
+        
+        var courseOption = document.createElement("option");
+        courseOption.setAttribute("value", course.id);
+        var courseText = document.createTextNode(course.name);
+        courseOption.appendChild(courseText);
+        
+        courseSelect.appendChild(courseOption);
+    }
+};
 
 var api = function(path, method, data, callback){
     YUI().use('io-xdr', function (Y) {
@@ -192,7 +194,14 @@ var api = function(path, method, data, callback){
 var init = function(){
     api('data.php/contexts', 'GET', null, function(data){
         contexts = JSON.parse(data).contexts;
-        build();
+        bindContexts();
+    });
+
+    document.getElementById('courseSelect').addEventListener('change', function(e){
+        api('data.php/contexts/' + e.target.selectedValue, 'GET', null, function(data){
+            questions = JSON.parse(data).questions;
+            build();
+        });
     });
 }
 
