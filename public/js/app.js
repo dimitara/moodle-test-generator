@@ -191,6 +191,23 @@ var api = function(path, method, data, callback){
     });
 }
 
+var sendChecked = function(){
+    var payload = {
+        title: document.getElementById('quizName').value,
+        questions: []
+    };
+
+    for (var i = 0; i < qArray.length; i++) {
+        if (qArray[i].isChecked == true)
+            payload.questions.push(qArray[i].questionId);
+    }
+    console.log(payload);
+
+    api('data.php/pdfgen', 'POST', payload, function(data){
+        console.log('for some reason it works');
+    });
+};
+
 var init = function(){
     api('data.php/contexts', 'GET', null, function(data){
         contexts = JSON.parse(data).contexts;
