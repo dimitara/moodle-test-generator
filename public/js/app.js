@@ -132,13 +132,13 @@ var build = function(){
 
     //DISPLAY INITIAL QUESTION PAGE
     displayQuestions(0);
-
+    
     //ADD PAGES
     for (var i = 0; i < Math.ceil(qArray.length/questionsPerPage); i++) {
         addPage();
     }
 
-    if(questions.length){
+    if(questions.length === 0){
         document.getElementById('noQWarning').style.display = 'block';
         document.getElementById('qList').style.display = 'none';
     }
@@ -198,7 +198,7 @@ var init = function(){
     });
 
     document.getElementById('courseSelect').addEventListener('change', function(e){
-        api('data.php/contexts/' + e.target.selectedValue, 'GET', null, function(data){
+        api('data.php/contexts/' + e.target.value, 'GET', null, function(data){
             questions = JSON.parse(data).questions;
             build();
         });
