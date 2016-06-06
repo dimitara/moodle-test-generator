@@ -202,18 +202,9 @@ var sendChecked = function(){
     }
     
     api('data.php/pdfgen', 'POST', payload, function(data){
-        console.log(data);
-        return ;
-        var filename = "";
-        var disposition = xhr.getResponseHeader('Content-Disposition');
-        if (disposition && disposition.indexOf('attachment') !== -1) {
-            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-            var matches = filenameRegex.exec(disposition);
-            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-        }
-        var type = xhr.getResponseHeader('Content-Type');
+        filename = 'test.pdf';
 
-        var blob = new Blob([this.response], { type: type });
+        var blob = new Blob([data], { type: 'application/pdf' });
         if (typeof window.navigator.msSaveBlob !== 'undefined') {
             // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
             window.navigator.msSaveBlob(blob, filename);
