@@ -137,7 +137,7 @@ var build = function(){
     for (var i = 0; i < Math.ceil(qArray.length/questionsPerPage); i++) {
         addPage();
     }
-    console.log(questions.length);
+
     if(questions.length === 0){
         document.getElementById('noQWarning').style.display = 'block';
         document.getElementById('qList').style.display = 'none';
@@ -258,6 +258,9 @@ var init = function(){
             build();
         });
     });
+
+    document.getElementById('noQWarning').style.display = 'block';
+    document.getElementById('qList').style.display = 'none';
 }
 
 init();
