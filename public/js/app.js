@@ -69,7 +69,6 @@ var build = function(){
 
     function addPage () {
         var questionPages = document.getElementById("questionPages");
-        questionPages.innerHTML = '';
         var qPage = document.createElement("li");
         qPage.setAttribute("class", "qPage");
         
@@ -132,6 +131,8 @@ var build = function(){
 
     //DISPLAY INITIAL QUESTION PAGE
     displayQuestions(0);
+    
+    questionPages.innerHTML = '';
     
     //ADD PAGES
     for (var i = 0; i < Math.ceil(qArray.length/questionsPerPage); i++) {
