@@ -1,11 +1,10 @@
 var questions = [];
 var contexts = null;
+var qArray = [];
 
 var build = function(){
     pageCounter = 0;
     questionsPerPage = 5;
-
-    var qArray = [];
 
     function question (questionId, questionTitle, questionType){
         

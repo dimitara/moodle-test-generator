@@ -1,6 +1,8 @@
 <?php
 define('AJAX_SCRIPT', true);
 require('../../config.php');
+require_once('generator.php');
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 //creates an array based on the requested route 
@@ -8,6 +10,25 @@ $method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 $context_id = '';
 $input = file_get_contents('php://input');
+
+
+
+class Question{
+	public $id;
+	public $answers;
+	public $name;
+	public $text;
+	public $type;
+		
+	public function __construct($id, $name, $text, $type){
+		$this->id = $id;
+		$this->name = $name;
+		$this->text = $text;
+		$this->type = $type;
+		$this->answers = array();
+	}
+}
+
 
 try {
 // 	if($method != 'GET')
@@ -46,18 +67,59 @@ try {
 				
 				if($method != 'POST')
 					throw new Exception('Unsupported request method. Please use POST.');
+							
 				
-				//code that runs pdfgenerator module
-				echo json_encode(json_decode($input),true);
-//  				$input = json_decode(file_get_contents('php://input'),true);
+ 				$input_string = file_get_contents('php://input');
+ 				$input_array = json_decode($input_string,true);
+				$quiz_title = $input_array['title'];
+				$quiz_questions = $input_array['questions'];
+				$questions = array();
+				//extracting standart questions from db
+				$dbquestion_answers = $DB->get_records_sql("
+						SELECT qa.id as answer_id, qa.question as id, qa.answer, q.name as name, q.qtype as type, q.questiontext as text
+						FROM {question_answers} as qa, {question} as q
+						WHERE qa.question in (".implode(',',$quiz_questions).")
+						AND qa.question = q.id", null);
 				
-//  				echo json_encode($input);
-// 				print_r($input);
-					
+//  			print_r($dbquestion_answers);
+			
+				//Data formating for standart questions
+				foreach($dbquestion_answers as $key => $value){
+					if (!array_key_exists($value->id,$questions)){
+						$questions[$value->id] = new Question($value->id, $value->name, $value->text, $value->type);		
+					}
+					array_push($questions[$value->id]->answers, $value->answer);	
+				}
 				
+				// extracting matching questions from db
+				$dbquestion_matching_answers = $DB->get_records_sql("
+						SELECT qa.id as answer_id, qa.questionid as id, qa.questiontext as first_option,
+						qa.answertext as second_option, q.name as name, q.qtype as type, q.questiontext as text
+						FROM {qtype_match_subquestions} as qa, {question} as q
+						WHERE qa.questionid in (".implode(',',$quiz_questions).")
+						AND qa.questionid = q.id", null);
+ 				
+ 				
+				//print_r($dbquestion_matching_answers);
+ 				//Data formating for matching questions
+				foreach($dbquestion_matching_answers as $key => $value){
+					if (!array_key_exists($value->id,$questions)){
+						$questions[$value->id] = new Question($value->id, $value->name, $value->text, $value->type);
+						array_push($questions[$value->id]->answers,array(),array());
+					}
+					array_push($questions[$value->id]->answers[0], $value->first_option);
+					array_push($questions[$value->id]->answers[1], $value->second_option);
+				}
 				
+				//Final array creation
+				$questions = array_values($questions);	
+    				//print_r($questions);
+				
+				//Generating quiz
+				generate_Quiz($quiz_title, array('questions'=>$questions));
 			}
 			break;
+		
 		case 2:
 			if($request[0] == 'contexts'){
 				if($method != 'GET')
@@ -91,3 +153,5 @@ try {
 catch (Exception $e){
     echo $e->getMessage();
 }
+
+?>
