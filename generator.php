@@ -1,62 +1,52 @@
 <?php 
 require('pdf_quiz_creator.php');
 
-
-
-
-// 	$text = fopen("questions.json", "r") or die("Unable to open file");
-// 	$string = fread($text, filesize("questions.json"));
-// 	fclose($text);
-
-// 	$arr = json_decode($string, false);
-
-// 	generate_Quiz("Title", $arr);
-
-// // 	// super_echo($arr);
-
-
-// // 	function super_echo($arr){
-// // 		echo "<pre>";
-// // 		print_r($arr);
-// // 		echo "</pre>";
-// // 		echo "<hr>";
-
-// // 	}
-
 	function generate_Quiz($title, $arr){
 		
+		$file = new Quiz($title);
 		foreach ($arr as $questions) { 
-	
-			$file = new Quiz($title);
+			
 			foreach ($questions as $question) {
+
+				$question_title = trim_outer_tags($question->text);
 
 				switch ($question->type) {
 					case 'shortanswer':
 					case 'calculated':
 					case 'numerical':
-						$file->add_shortAnswer($question->text, true);
+						$file->add_shortAnswer($question_title, true);
 						break;
 
 					case 'multichoice':
 					case 'calculatedmulti':
-						$file->add_multipleChoice($question->text, 'more', $question->answers, 'a');
+						$trimmed_answers = array();
+						foreach ($question->answers as $option) {
+							$option = trim_outer_tags($option); 
+							array_push($trimmed_answers, $option);
+						}
+						$file->add_multipleChoice($question_title, 'more', $trimmed_answers, 'a');
 						break;
 
 					case 'essay':
-						$file->add_essay($question->text, 2);
+						$file->add_essay($question_title);
 						break;
 
 					case 'match':
-						$file->add_matching($question->text, $question->answers);
+						$trimmed_answers = array();
+						foreach ($question->answers as $options_set) {
+							$trimmed_set = array();
+							foreach ($options_set as $option) {
+								$option = trim_outer_tags($option);
+								array_push($trimmed_set, $option);
+							}
+							array_push($trimmed_answers, $trimmed_set);
+						}					
+						$file->add_matching($question_title, $trimmed_answers);
 						break;	
 
 					case "truefalse":
-						$file->add_multipleChoice($question->text, "one", array("true", "false"), 'a');
+						$file->add_multipleChoice($question_title, "one", array("true", "false"), 'a');
 						break;	
-
-					case "multianswer":
-						$file->add_embedded($question->text, $question->answers);
-
 
 					default:
 						break;
@@ -64,7 +54,44 @@ require('pdf_quiz_creator.php');
 			}
 		}
 
-		return $file->serialize();
+		$file_name = $file->serialize();
+		return $file_name;
+	}
+
+
+	function trim_outer_tags($value){
+		$arr = array();
+		preg_match('/">(.*)<\/s/', $value, $arr);
+		
+		if (array_key_exists(1, $arr)){
+			$result = $arr[1];
+
+		} else {
+			$arr = array();
+			preg_match('/>(.*)</', $value, $arr);
+			if(array_key_exists(1, $arr)){
+				if(endsWith($arr[1], "<br>")){
+					$temp = $arr[1];
+					$result = preg_replace('/<br>(?!.*br>)/', " ", $temp);
+					return $result;
+				}
+				$result = $arr[1];	
+			} else{
+				$result = $value;
+			}	
+		}
+	
+		return $result;
+	}
+
+	function endsWith($haystack, $needle)
+	{
+	    $length = strlen($needle);
+	    if ($length == 0) {
+	        return true;
+	    }
+
+	    return (substr($haystack, -$length) === $needle);
 	}
 
 ?>

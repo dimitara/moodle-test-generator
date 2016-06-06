@@ -78,7 +78,7 @@ try {
 				$dbquestion_answers = $DB->get_records_sql("
 						SELECT qa.id as answer_id, qa.question as id, qa.answer, q.name as name, q.qtype as type, q.questiontext as text
 						FROM {question_answers} as qa, {question} as q
-						WHERE qa.question in (".implode(',',$quiz_questions).")
+						WHERE q.id in (".implode(',',$quiz_questions).")
 						AND qa.question = q.id", null);
 				
 //  			print_r($dbquestion_answers);
@@ -96,9 +96,9 @@ try {
 						SELECT qa.id as answer_id, qa.questionid as id, qa.questiontext as first_option,
 						qa.answertext as second_option, q.name as name, q.qtype as type, q.questiontext as text
 						FROM {qtype_match_subquestions} as qa, {question} as q
-						WHERE qa.questionid in (".implode(',',$quiz_questions).")
+						WHERE q.id in (".implode(',',$quiz_questions).")
 						AND qa.questionid = q.id", null);
- 				
+						 				
  				
 				//print_r($dbquestion_matching_answers);
  				//Data formating for matching questions
@@ -111,12 +111,27 @@ try {
 					array_push($questions[$value->id]->answers[1], $value->second_option);
 				}
 				
+				// extracting essay questions from db
+				$dbquestion_essay_answers = $DB->get_records_sql("
+						SELECT q.id as id, q.name as name, q.qtype as type, q.questiontext as text
+						FROM {question} as q
+						WHERE q.id in (".implode(',',$quiz_questions).")
+						AND q.qtype = 'essay'", null);
+				//Formating data for essay questions
+				foreach($dbquestion_essay_answers as $key => $value){
+						$questions[$value->id] = new Question($value->id, $value->name, $value->text, $value->type);
+					}
+					
+				
 				//Final array creation
 				$questions = array_values($questions);	
-    				//print_r($questions);
+//     				print_r($questions);
 				
 				//Generating quiz
-				generate_Quiz($quiz_title, array('questions'=>$questions));
+				$quiz_file_path = generate_Quiz($quiz_title, array('questions'=>$questions));
+				//sending JSON
+				header('Content-Type: application/json; charset=utf-8');
+				echo json_encode(array("quiz_file_path" => $quiz_file_path), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 			}
 			break;
 		
