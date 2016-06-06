@@ -215,6 +215,7 @@ var sendChecked = function(){
     }
     
     api('data.php/pdfgen', 'POST', payload, function(data){
+        console.log(data);
         var url = window.location.href;
         url = url.substring(0,url.lastIndexOf('/') + 1);
         url = url + data.quiz_file_path;
@@ -223,7 +224,7 @@ var sendChecked = function(){
         a.setAttribute('href', url);
         a.setAttribute('target', '_blank');
 
-        а.click();
+        a.click();
     });
 };
 
