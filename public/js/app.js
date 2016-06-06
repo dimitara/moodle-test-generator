@@ -69,6 +69,7 @@ var build = function(){
 
     function addPage () {
         var questionPages = document.getElementById("questionPages");
+        questionPages.innerHTML = '';
         var qPage = document.createElement("li");
         qPage.setAttribute("class", "qPage");
         
