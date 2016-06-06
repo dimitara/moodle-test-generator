@@ -121,7 +121,6 @@ var build = function(){
             if (qArray[i].isChecked == true)
                 wAlert += qArray[i].questionId.toString() + " ";
         }
-        window.alert(wAlert)
     }
 
     //ADD QUESTIONS TO aArray
@@ -133,7 +132,7 @@ var build = function(){
     displayQuestions(0);
     
     questionPages.innerHTML = '';
-    
+
     //ADD PAGES
     for (var i = 0; i < Math.ceil(qArray.length/questionsPerPage); i++) {
         addPage();
@@ -193,6 +192,18 @@ var api = function(path, method, data, callback){
 }
 
 var sendChecked = function(){
+    if(!document.getElementById('quizName').value){
+        alert('Не може да бъде генериран тест без заглавие!');
+
+        return ;
+    }
+
+    if(!qArray.length){
+        alert('Не може да бъде генериран тест без избрани въпроси!');
+
+        return ;   
+    }
+
     var payload = {
         title: document.getElementById('quizName').value,
         questions: []
