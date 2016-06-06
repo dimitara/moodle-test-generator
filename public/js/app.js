@@ -215,11 +215,12 @@ var sendChecked = function(){
     }
     
     api('data.php/pdfgen', 'POST', payload, function(data){
-        console.log(data);
+        data = JSON.parse(data);
+
         var url = window.location.href;
         url = url.substring(0,url.lastIndexOf('/') + 1);
         url = url + data.quiz_file_path;
-        console.log(url);
+        
         var a = document.createElement('a');
         a.setAttribute('href', url);
         a.setAttribute('target', '_blank');
