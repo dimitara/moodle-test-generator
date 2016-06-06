@@ -53,13 +53,9 @@ echo '<html>
         
     </head>
     <body>
-        <div id="leftPanel" style="float: left">
-        </div>          
-        
-        
         <div id="rightPanel">
             <h3>Модул за създаване на тестове</h3>
-            <p>Въведи заглавие на теста</p>
+            <p style="text-align:left;">Въведи заглавие на теста</p>
                 <div id="quizDiv">
                     <input id="quizName" type="text" name="quizName">
                     <select id="courseSelect" name="courseSelect">
