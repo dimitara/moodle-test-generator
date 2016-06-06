@@ -198,7 +198,7 @@ var sendChecked = function(){
 
     for (var i = 0; i < qArray.length; i++) {
         if (qArray[i].isChecked == true)
-            payload.questions.push(qArray[i].questionId);
+            payload.questions.push(parseInt(qArray[i].questionId));
     }
     
     api('data.php/pdfgen', 'POST', payload, function(data){
